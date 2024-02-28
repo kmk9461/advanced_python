@@ -5,11 +5,11 @@ import pybase64
 import pandas as pd
 import json
 
-#before running this, make sure to create a .env file with your-client-id and your-client-secret 
+#before running this, must create a .env file with your-client-id and your-client-secret 
 #get these credentials here: https://developer.spotify.com/documentation/web-api/tutorials/getting-started#request-an-access-token
 load_dotenv()
 
-#get credentials
+#get credentials and encode them
 your_client_id = os.environ.get("your-client-id")
 your_client_secret = os.environ.get("your-client-secret")
 credentials = f"{your_client_id}:{your_client_secret}"
@@ -27,7 +27,7 @@ artist_id = '6vWDO969PvNqNYHIOW5v0m'
 url = f'https://api.spotify.com/v1/artists/{artist_id}'
 headers = {'Authorization': f'Bearer {access_token}'}
 r = requests.get(url, headers=headers)
-print('details about artist')
+print('details we can pull about an artist')
 print(r.text)
 print('\n')
 
@@ -35,7 +35,7 @@ print('\n')
 track_id = '56nmnMzaT44l8RmzPLkpdJ'
 url = f'https://api.spotify.com/v1/'
 r = requests.get(url + 'audio-features/' + track_id, headers=headers)
-print('details about track')
+print('details we can pull about a track')
 print(r.text)
 print('\n')
 
@@ -46,11 +46,11 @@ r = requests.get(url + 'artists/' + artist_id + '/albums',
 d = r.json()
 
 #different things we can pull from an album
-print('details about album')
+print('details we can pull about an album')
 print(d['items'][0].keys())
-print([d['items'][i]['name'] for i in range(len(d['items']))])
-print([d['items'][i]['release_date'] for i in range(len(d['items']))])
-print([d['items'][i]['total_tracks'] for i in range(len(d['items']))])
+print('album names:', [d['items'][i]['name'] for i in range(len(d['items']))])
+print('release dates:', [d['items'][i]['release_date'] for i in range(len(d['items']))])
+print('num of tracks:', [d['items'][i]['total_tracks'] for i in range(len(d['items']))])
 print('\n')
 
 # #get user defined playlist
@@ -58,8 +58,15 @@ url = f'https://api.spotify.com/v1/'
 #this is me and a test playlist I made
 r = requests.get(url + 'users/31ipbtu2v7pmtmja4r6i37rd6vrq/playlists/7qkgBK0HyIl7KGA0Z0wK7F', headers=headers)
 d = r.json()
+print('details we can pull about a playlist')
+print(d.keys())
+print('details we can pull about a track on a playlist')
+print(d['tracks']['items'][0]['track'].keys())
+print('\n')
+
 print('playlist track #1')
-print(d['tracks']['items'][0]['track']['name'])
+print('track name:', d['tracks']['items'][0]['track']['name'])
+print('popularity:', d['tracks']['items'][0]['track']['popularity'])
 print('\n')
 
 #check the audio features of a song from a playlist
@@ -70,5 +77,8 @@ res = json.loads(r.text)
 
 #make this a df
 df = pd.DataFrame.from_dict(res, orient='index')
-print('df of playlist song #1 attributes')
+print('df of playlist track #1 attributes')
 print(df)
+
+#a slow way to analyze this would be to loop through repeated API calls to get each song of a playlist and merge them to the df
+#can we pull multiple tracks at once to speed that up?
