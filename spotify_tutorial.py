@@ -69,18 +69,10 @@ print('track name:', d['tracks']['items'][0]['track']['name'])
 print('popularity:', d['tracks']['items'][0]['track']['popularity'])
 print('\n')
 
-print('testing')
-#check the audio features of a song from a playlist
-track_id = d['tracks']['items'][:]['track']['id']
-print(track_id)
+#we can pull the audio features of multiple tracks at once - max 100 though
+track_ids = ",".join([d['tracks']['items'][i]['track']['id'] for i in range(len(d['tracks']['items']))])
 url = f'https://api.spotify.com/v1/'
-r = requests.get(url + 'audio-features/' + track_id, headers=headers)
+r = requests.get(url + 'audio-features?ids=' + track_ids, headers=headers)
 res = json.loads(r.text)
 
-#make this a df
-df = pd.DataFrame.from_dict(res, orient='index')
-print('df of playlist track #1 attributes')
-print(df)
-
-#a slow way to analyze this would be to loop through repeated API calls to get each song of a playlist and merge them to the df
-#can we pull multiple tracks at once to speed that up?
+#will need to merge back with the name etc
