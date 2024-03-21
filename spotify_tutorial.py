@@ -69,8 +69,10 @@ print('track name:', d['tracks']['items'][0]['track']['name'])
 print('popularity:', d['tracks']['items'][0]['track']['popularity'])
 print('\n')
 
+print('testing')
 #check the audio features of a song from a playlist
-track_id = d['tracks']['items'][0]['track']['id']
+track_id = d['tracks']['items'][:]['track']['id']
+print(track_id)
 url = f'https://api.spotify.com/v1/'
 r = requests.get(url + 'audio-features/' + track_id, headers=headers)
 res = json.loads(r.text)
