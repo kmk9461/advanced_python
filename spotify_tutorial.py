@@ -72,7 +72,7 @@ print('track name:', d['tracks']['items'][0]['track']['name'])
 print('popularity:', d['tracks']['items'][0]['track']['popularity'])
 print('\n')
 
-#we can pull the audio features of multiple tracks at once - max 100 though
+#we can pull the audio features of multiple tracks at once - max 100 though so still need mult calls
 track_ids = ",".join([d['tracks']['items'][i]['track']['id'] for i in range(len(d['tracks']['items']))]) #room for enhancement, avoid list?
 url = f'https://api.spotify.com/v1/'
 r = requests.get(url + 'audio-features?ids=' + track_ids, headers=headers)
@@ -80,13 +80,14 @@ res = json.loads(r.text)
 print(res['audio_features'][0].keys())
 print('\n')
 
-#get this in usable format for comparison
+#get this in usable format for comparison 
 our_array = np.array([(list(res['audio_features'][i].values())) for i in range(3)]) #again remove lists etc for more efficient program
 print(our_array)
 print('\n')
 
 #remove non-numeric columns
 filter_indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 17] #col 12 is the id, we probably need to include this 
+#could possible use something like itertools filterfalse instead here
 filtered_array = our_array[:,filter_indices].astype(float)
 print('here is our filtered array')
 print(filtered_array)
@@ -94,3 +95,5 @@ print('\n')
 
 print('average scores for our playlist')
 print(np.mean(filtered_array, axis = 0))
+
+#this is where numba/cython could potentially come in 
