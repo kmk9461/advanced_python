@@ -4,6 +4,8 @@ import requests
 import pybase64
 import pandas as pd
 import json
+import numpy as np
+import itertools
 
 #before running this, must create a .env file with your-client-id and your-client-secret 
 #get these credentials here: https://developer.spotify.com/documentation/web-api/tutorials/getting-started#request-an-access-token
@@ -55,7 +57,7 @@ print('\n')
 
 # #get user defined playlist
 url = f'https://api.spotify.com/v1/'
-#this is me and a test playlist I made
+#just a test playlist of three songs
 r = requests.get(url + 'users/31ipbtu2v7pmtmja4r6i37rd6vrq/playlists/7qkgBK0HyIl7KGA0Z0wK7F', headers=headers)
 d = r.json()
 print('details we can pull about a playlist')
@@ -64,15 +66,31 @@ print('details we can pull about a track on a playlist')
 print(d['tracks']['items'][0]['track'].keys())
 print('\n')
 
+#print name and popularity of one of these songs
 print('playlist track #1')
 print('track name:', d['tracks']['items'][0]['track']['name'])
 print('popularity:', d['tracks']['items'][0]['track']['popularity'])
 print('\n')
 
 #we can pull the audio features of multiple tracks at once - max 100 though
-track_ids = ",".join([d['tracks']['items'][i]['track']['id'] for i in range(len(d['tracks']['items']))])
+track_ids = ",".join([d['tracks']['items'][i]['track']['id'] for i in range(len(d['tracks']['items']))]) #room for enhancement, avoid list?
 url = f'https://api.spotify.com/v1/'
 r = requests.get(url + 'audio-features?ids=' + track_ids, headers=headers)
 res = json.loads(r.text)
+print(res['audio_features'][0].keys())
+print('\n')
 
-#will need to merge back with the name etc
+#get this in usable format for comparison
+our_array = np.array([(list(res['audio_features'][i].values())) for i in range(3)]) #again remove lists etc for more efficient program
+print(our_array)
+print('\n')
+
+#remove non-numeric columns
+filter_indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 17] #col 12 is the id, we probably need to include this 
+filtered_array = our_array[:,filter_indices].astype(float)
+print('here is our filtered array')
+print(filtered_array)
+print('\n')
+
+print('average scores for our playlist')
+print(np.mean(filtered_array, axis = 0))
