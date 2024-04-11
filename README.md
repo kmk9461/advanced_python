@@ -7,5 +7,5 @@ To do (04/11):
 
 
 Coming up
--Further optimization (cython, etc) 
--Writing Report 
+- Further optimization (cython, etc) 
+- Writing Report 
