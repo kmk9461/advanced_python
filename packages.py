@@ -1,5 +1,7 @@
 import time
 import os
+import concurrent.futures
+import itertools
 import requests
 import base64
 from dotenv import load_dotenv
@@ -17,3 +19,5 @@ from bokeh.plotting import figure, show, output_notebook, ColumnDataSource
 from bokeh.models import HoverTool, Div
 from bokeh.layouts import column
 from bokeh.io import curdoc
+
+
