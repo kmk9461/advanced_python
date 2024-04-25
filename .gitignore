@@ -7,6 +7,9 @@
 *.o
 *.so
 
+
+*.env
+**/.DS_Store
 spotify_data.csv
 
 # Packages #
