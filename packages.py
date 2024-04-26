@@ -1,23 +1,22 @@
-import time
-import os
+import base64
 import concurrent.futures
 import itertools
-import requests
-import base64
-from dotenv import load_dotenv
 import json
-from urllib.parse import urlencode
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt 
-import random
-from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import os
+import pandas as pd
+import requests
 import seaborn
-
-from bokeh.plotting import figure, show, output_notebook, ColumnDataSource
-from bokeh.models import HoverTool, Div
-from bokeh.layouts import column
+import time
+import numpy as np
 from bokeh.io import curdoc
-
-
+from bokeh.layouts import column
+from bokeh.models import Div, HoverTool
+from bokeh.plotting import show
+from bokeh.plotting import ColumnDataSource, figure, output_notebook
+from dotenv import load_dotenv
+from urllib.parse import urlencode
+from wordcloud import WordCloud
+from queue import Queue
+from threading import Thread, Lock
+import threading
