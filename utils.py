@@ -1,3 +1,5 @@
+#This file is written so that the multiprocessing function can run correctly in Jupyter
+
 import numpy as np
 import pandas as pd
 import warnings
