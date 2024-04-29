@@ -1,5 +1,4 @@
-
-Mission: Our codebase consists of a !.
+Our codebase consists of the following. 
 
 
 I. Installation & Set-up 
